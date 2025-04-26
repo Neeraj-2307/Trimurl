@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch URL Details</title>
+    <script>
+        // Function to fetch URL details
+        function fetchUrlDetails() {
+            const urlParam = document.getElementById('urlInput').value;
+            const apiUrl = `http://localhost:8080/fetch_url?url=${encodeURIComponent(urlParam)}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('output').textContent = JSON.stringify(data.responseEntity, null, 2);
+                    } else {
+                        document.getElementById('output').textContent = 'No data found or an error occurred.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('output').textContent = 'Error fetching data';
+                });
+        }
+    </script>
+</head>
+<body>
+<h1>Fetch URL Details</h1>
+<label for="urlInput">Enter URL:</label>
+<input type="text" id="urlInput" placeholder="Enter URL here" />
+<button onclick="fetchUrlDetails()">Fetch Details</button>
+
+<h2>Response:</h2>
+<pre id="output"></pre>
+</body>
+</html>
