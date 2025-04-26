@@ -2,123 +2,291 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fetch URL Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>URL Shortener</title>
     <style>
-        /* Reset default browser styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
+          font-family: 'Courier New', Courier, monospace;
+          background-color: #1e1e1e;
+          color: #d3d3d3;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 50px;
+          min-height: 100vh;
+          position: relative;
         }
 
         h1 {
-            margin-bottom: 20px;
-            color: #333;
+          color: #f1f1f1;
+          text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+          margin-bottom: 30px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #555;
+        .container {
+          background: #2d2d2d;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+          width: 515px;
+          max-width: 90%;
+          text-align: center;
+          border: 1px solid #808080;
         }
 
         input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
+          width: 100%;
+          padding: 10px;
+          margin-top: 10px;
+          margin-bottom: 20px;
+          border: 1px solid #808080;
+          border-radius: 6px;
+          font-size: 16px;
+          background-color: #333;
+          color: #d3d3d3;
+        }
+
+        input[type="text"]:focus {
+          border-color: #81c784;
+          background-color: #444;
         }
 
         button {
-            background-color: #6a11cb;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s ease;
+          padding: 10px 20px;
+          background-color: #444;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 16px;
+          margin-top: 10px;
         }
 
         button:hover {
-            background-color: #2575fc;
+          background-color: #666;
         }
 
-        h2 {
-            margin-top: 30px;
-            color: #333;
+        #loading {
+          display: none;
+          margin-top: 15px;
+          font-weight: bold;
+          color: #888;
         }
 
-        pre#output {
-            background: #f4f4f4;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: left;
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 10px;
-            font-size: 14px;
-            color: #333;
+        #output {
+          margin-top: 20px;
+          word-break: break-word;
+          color: #e5e5e5;
+        }
+
+        a {
+          color: #f1f1f1;
+          text-decoration: none;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        #analyticsTable {
+          margin-top: 20px;
+          border-collapse: collapse;
+          width: 100%;
+          display: none;
+          font-size: 14px;
+          color: #d3d3d3;
+        }
+
+        #analyticsTable th, #analyticsTable td {
+          border: 1px solid #444;
+          padding: 8px;
+          text-align: center;
+        }
+
+        #analyticsTable th {
+          background-color: #333;
+        }
+
+        #hitCountInfo {
+          margin-top: 15px;
+          font-size: 14px;
+          font-weight: bold;
+          color: #81c784;
+          display: none;
+        }
+
+        #dbSizeInfo {
+          position: absolute;
+          bottom: 10px;
+          left: 10px;
+          font-size: 12px;
+          color: #f5f5f5;
+        }
+
+        #analyticsButton {
+          margin-top: 10px;
+          padding: 10px 20px;
+          background-color: #ff9800;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+        }
+
+        #analyticsButton:hover {
+          background-color: #f57c00;
+        }
+
+        #urlError {
+          color: #ff5722;
+          font-size: 14px;
         }
     </style>
-
-    <script>
-        // Function to fetch URL details
-        function fetchUrlDetails() {
-            const urlParam = document.getElementById('urlInput').value;
-            const apiUrl = `http://localhost:8080/fetch_url?url=${encodeURIComponent(urlParam)}`;
-
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('output').textContent = JSON.stringify(data.responseEntity, null, 2);
-                    } else {
-                        document.getElementById('output').textContent = 'No data found or an error occurred.';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('output').textContent = 'Error fetching data';
-                });
-        }
-    </script>
 </head>
 <body>
 
+<h1>URL Shortener</h1>
 <div class="container">
-    <h1>Fetch URL Details</h1>
-    <label for="urlInput">Enter URL:</label>
-    <input type="text" id="urlInput" placeholder="Enter URL here" />
-    <button onclick="fetchUrlDetails()">Fetch Details</button>
+    <input type="text" id="urlInput" placeholder="Enter URL here..." />
+    <button onclick="shortenUrl()">Shorten URL</button>
 
-    <h2>Response:</h2>
-    <pre id="output"></pre>
+    <div id="loading">Processing, please wait...</div>
+
+    <div id="output"></div>
+    <button id="analyticsButton" onclick="fetchAnalytics()" style="display:none;">See URL Analytics</button>
+
+    <div id="hitCountInfo"></div>
+
+    <table id="analyticsTable">
+        <thead>
+        <tr>
+            <th>Server Name</th>
+            <th>Server Port</th>
+            <th>Remote Address</th>
+            <th>Remote Host</th>
+            <th>Remote Port</th>
+        </tr>
+        </thead>
+        <tbody id="analyticsBody">
+        </tbody>
+    </table>
+
 </div>
+
+<div id="dbSizeInfo" style="display: none;"></div>
+
+<script>
+    let lastQueriedUrl = '';
+    let currentHitCount = 0;
+
+    function shortenUrl() {
+      const url = document.getElementById('urlInput').value;
+      const apiUrl = "http://localhost:8080/trim_url";
+
+      document.getElementById('output').textContent = '';
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('analyticsButton').style.display = 'none';
+      document.getElementById('analyticsTable').style.display = 'none';
+      document.getElementById('hitCountInfo').style.display = 'none';
+
+      fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ url: url })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('loading').style.display = 'none';
+
+        if (data.success) {
+          const modifiedUrl = data.responseEntity.modifiedUrl;
+          const urlTTL = new Date(data.responseEntity.urlTTL).toLocaleString();
+          currentHitCount = data.responseEntity.hitCount || 0;
+
+          document.getElementById('output').innerHTML = `
+            <strong>Shortened URL:</strong><br>
+            <a href="${modifiedUrl}" target="_blank">${modifiedUrl}</a><br><br>
+            <em>This URL will be valid till:</em> <strong>${urlTTL}</strong>
+          `;
+        } else if (data.errorCode === "URL_ALREADY_EXISTS") {
+          const modifiedUrl = data.responseEntity.modifiedUrl;
+          const urlTTL = new Date(data.responseEntity.urlTTL).toLocaleString();
+          currentHitCount = data.responseEntity.hitCount || 0;
+
+          document.getElementById('output').innerHTML = `
+            <strong style="color: orange;">URL already exists.</strong><br><br>
+            <strong>Existing Shortened URL:</strong><br>
+            <a href="${modifiedUrl}" target="_blank">${modifiedUrl}</a><br><br>
+            <em>This URL will be valid till:</em> <strong>${urlTTL}</strong>
+          `;
+          document.getElementById('analyticsButton').style.display = 'inline-block';
+          lastQueriedUrl = url;
+        } else {
+          document.getElementById('output').textContent = 'Error: Could not shorten the URL.';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('output').textContent = 'Error contacting server.';
+      });
+    }
+
+    function fetchAnalytics() {
+      const apiUrl = `http://localhost:8080/fetch_url_requests?url=${encodeURIComponent(lastQueriedUrl)}`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            const tableBody = document.getElementById('analyticsBody');
+            tableBody.innerHTML = '';
+
+            data.requestDetails.forEach(request => {
+              const row = `<tr>
+                <td>${request.serverName}</td>
+                <td>${request.serverPort}</td>
+                <td>${request.remoteAddr}</td>
+                <td>${request.remoteHost}</td>
+                <td>${request.remotePort}</td>
+              </tr>`;
+              tableBody.innerHTML += row;
+            });
+
+            document.getElementById('analyticsTable').style.display = 'table';
+
+            // Show hit count info
+            document.getElementById('hitCountInfo').textContent = `This URL has been clicked ${currentHitCount} time(s).`;
+            document.getElementById('hitCountInfo').style.display = 'block';
+          } else {
+            alert('No analytics found.');
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching analytics:', error);
+        });
+    }
+
+    function fetchTotalUrls() {
+      const apiUrl = "http://localhost:8080/totalUrls";
+
+      fetch(apiUrl)
+        .then(response => response.text())
+        .then(count => {
+          if (parseInt(count) > 0) {
+            document.getElementById('dbSizeInfo').style.display = 'block';
+            document.getElementById('dbSizeInfo').textContent = `Total URLs stored: ${count}`;
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching total URLs:', error);
+        });
+    }
+
+    window.onload = fetchTotalUrls;
+</script>
 
 </body>
 </html>
