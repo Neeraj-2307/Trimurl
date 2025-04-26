@@ -4,11 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fetch URL Details</title>
+    <style>
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2575fc;
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #333;
+        }
+
+        pre#output {
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+
     <script>
         // Function to fetch URL details
         function fetchUrlDetails() {
             const urlParam = document.getElementById('urlInput').value;
-            const apiUrl = `http://localhost:8080/api/fetch_url?url=${encodeURIComponent(urlParam)}`;
+            const apiUrl = `http://localhost:8080/fetch_url?url=${encodeURIComponent(urlParam)}`;
 
             fetch(apiUrl)
                 .then(response => response.json())
@@ -27,12 +109,16 @@
     </script>
 </head>
 <body>
-<h1>Fetch URL Details</h1>
-<label for="urlInput">Enter URL:</label>
-<input type="text" id="urlInput" placeholder="Enter URL here" />
-<button onclick="fetchUrlDetails()">Fetch Details</button>
 
-<h2>Response:</h2>
-<pre id="output"></pre>
+<div class="container">
+    <h1>Fetch URL Details</h1>
+    <label for="urlInput">Enter URL:</label>
+    <input type="text" id="urlInput" placeholder="Enter URL here" />
+    <button onclick="fetchUrlDetails()">Fetch Details</button>
+
+    <h2>Response:</h2>
+    <pre id="output"></pre>
+</div>
+
 </body>
 </html>
