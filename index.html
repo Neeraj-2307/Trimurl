@@ -28,7 +28,7 @@
           padding: 30px;
           border-radius: 10px;
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
-          width: 515px;
+          width: 600px;
           max-width: 90%;
           text-align: center;
           border: 1px solid #808080;
@@ -181,7 +181,7 @@
 
     function shortenUrl() {
       const url = document.getElementById('urlInput').value;
-      const apiUrl = "http://localhost:8080/trim_url";
+      const apiUrl = "https://urltrim-a23q.onrender.com/trim_url";
 
       document.getElementById('output').textContent = '';
       document.getElementById('loading').style.display = 'block';
@@ -207,7 +207,7 @@
 
           document.getElementById('output').innerHTML = `
             <strong>Shortened URL:</strong><br>
-            <a href="${modifiedUrl}" target="_blank">${modifiedUrl}</a><br><br>
+            <a href="https://urltrim-a23q.onrender.com${modifiedUrl}" target="_blank">https://urltrim-a23q.onrender.com${modifiedUrl}</a><br><br>
             <em>This URL will be valid till:</em> <strong>${urlTTL}</strong>
           `;
         } else if (data.errorCode === "URL_ALREADY_EXISTS") {
@@ -218,7 +218,7 @@
           document.getElementById('output').innerHTML = `
             <strong style="color: orange;">URL already exists.</strong><br><br>
             <strong>Existing Shortened URL:</strong><br>
-            <a href="${modifiedUrl}" target="_blank">${modifiedUrl}</a><br><br>
+            <a href="https://urltrim-a23q.onrender.com${modifiedUrl}" target="_blank">https://urltrim-a23q.onrender.com${modifiedUrl}</a><br><br>
             <em>This URL will be valid till:</em> <strong>${urlTTL}</strong>
           `;
           document.getElementById('analyticsButton').style.display = 'inline-block';
@@ -235,7 +235,7 @@
     }
 
     function fetchAnalytics() {
-      const apiUrl = `http://localhost:8080/fetch_url_requests?url=${encodeURIComponent(lastQueriedUrl)}`;
+      const apiUrl = `https://urltrim-a23q.onrender.com/fetch_url_requests?url=${encodeURIComponent(lastQueriedUrl)}`;
 
       fetch(apiUrl)
         .then(response => response.json())
@@ -270,7 +270,7 @@
     }
 
     function fetchTotalUrls() {
-      const apiUrl = "http://localhost:8080/totalUrls";
+      const apiUrl = "https://urltrim-a23q.onrender.com/totalUrls";
 
       fetch(apiUrl)
         .then(response => response.text())
